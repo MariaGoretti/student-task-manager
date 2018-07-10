@@ -5,28 +5,31 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\students;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\UserResource;
 
 class StudentController extends Controller
 {
     protected $database = 'students';
 	
-    public function store(Request $request)
+    public function register(Request $req)
 	{
-		$validate = $request->validate([
+		/*$validate = $request->validate([
         'firstname'=>'required',
         'lastname'=>'required',
         'username'=>'required',
         'email'=>'required',
         'phone'>'required',
         'password'=>'required',
-		]);
+		]);*/
 
-		$firstname = $request->input('firstname');
-		$lastname=$request->input('lastname');
-		$username=$request->input('username');
-		$email=$request->input('email');
-		$phone=$request->input('phone');
-		$password=$request->input('password');
+		$firstname = $req->input('firstname');
+		$lastname=$req->input('lastname');
+		$username=$req->input('username');
+		$email=$req->input('email');
+		$phone=$req->input('phone');
+		$password=$req->input('password');
 
 		$data = array(
 			'firstname'=>$firstname, 
@@ -37,10 +40,7 @@ class StudentController extends Controller
 			'password'=>$password
 			);
 
-		DB::table('student')->insert($data);
-
-		echo "<script type='text/javascript'>alert('Registration successful')</script>";
-		echo "<script>setTimeout(\"location.href = '/register';\",1000);</script>";
+		DB::table('students')->insert($data);
 	}
 
 	public function login(Request $req)
@@ -49,7 +49,7 @@ class StudentController extends Controller
         $email=$req['email'];
         $password=$req['password'];
 
-        $student = student::where('email',$email)->firstOrFail();
+        $student = students::where('email',$email)->firstOrFail();
 
         if(Hash::check($password, $student->password))
         {
