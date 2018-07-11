@@ -6,11 +6,10 @@ use Illuminate\Http\Request;
 use DB;
 use App\Students;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Resources\UserResource;
+use App\Http\Resources\StudentResource;
 
 class StudentController extends Controller
 {
-    protected $database = 'students';
 	
     public function register(Request $req)
 	{
@@ -30,6 +29,10 @@ class StudentController extends Controller
         $student->password = Hash::make($password);
         $student->save();
 
+         return new StudentResource(
+            $student
+        );
+
 
 	}
 
@@ -39,7 +42,7 @@ class StudentController extends Controller
         $email=$req['email'];
         $password=$req['password'];
 
-        $student = students::where('email',$email)->firstOrFail();
+        $student = Students::where('email',$email)->firstOrFail();
 
         if(Hash::check($password, $student->password))
         {
