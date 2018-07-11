@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use DB;
 use App\students;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Resources\UserResource;
 
 class StudentController extends Controller
 {
