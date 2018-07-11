@@ -16,7 +16,7 @@ class StudentController extends Controller
 	    $firstname = $req['firstname'];
         $lastname = $req['lastname'];
         $email = $req['email'];
-        $phone = $req['phone'], false;
+        $phone = $req['phone'];
         $username =$req['username'];
         $password = $req['password'];
 
@@ -32,7 +32,6 @@ class StudentController extends Controller
          return new StudentResource(
             $student
         );
-
 
 	}
 
