@@ -48,11 +48,11 @@ class StudentController extends Controller
         $email=$req['email'];
         $password=$req['password'];
 
-        $student = student::where('email',$email)->firstOrFail();
+        $students = students::where('email',$email)->firstOrFail();
 
-        if(Hash::check($password, $student->password))
+        if(Hash::check($password, $students->password))
         {
-            return $student->toJson();
+            return $students->toJson();
         }
         return null;
     }
