@@ -48,7 +48,7 @@ class StudentController extends Controller
         $email=$req['email'];
         $password=$req['password'];
 
-        $student = students::where('email',$email)->firstOrFail();
+        $student = student::where('email',$email)->firstOrFail();
 
         if(Hash::check($password, $student->password))
         {
