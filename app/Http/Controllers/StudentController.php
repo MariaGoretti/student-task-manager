@@ -14,7 +14,7 @@ class StudentController extends Controller
 	
     public function register(Request $req)
 	{
-	$firstname = $req['firstname'];
+	    $firstname = $req['firstname'];
         $lastname = $req['lastname'];
         $email = $req['email'];
         $phone = $req['phone'];
