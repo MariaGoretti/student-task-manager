@@ -67,7 +67,7 @@ if(mysqli_connect_errno()){
 echo json_encode($response);
 }
 
-	}
+	
 
 	public function all(Request $req)
     {
