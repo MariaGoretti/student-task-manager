@@ -12,14 +12,14 @@ class StudentController extends Controller
 	
     public function register(Request $req)
 	{
-		/*$validate = $request->validate([
+		$validate = $request->validate([
         'firstname'=>'required',
         'lastname'=>'required',
         'username'=>'required',
         'email'=>'required',
         'phone'>'required',
         'password'=>'required',
-		]);*/
+		]);
 
 		$firstname = $req->input('firstname');
 		$lastname=$req->input('lastname');
