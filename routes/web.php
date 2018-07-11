@@ -16,7 +16,7 @@ Route::get('/', function () {
 });
 
 Route::post('/register','StudentController@register');
-Route::post('login','StudentController@login');
+Route::post('/login','StudentController@login');
 
 Route::post('/add','TaskController@add');
 Route::get('/all','TaskController@all');
