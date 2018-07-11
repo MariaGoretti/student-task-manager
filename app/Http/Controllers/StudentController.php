@@ -21,7 +21,7 @@ class StudentController extends Controller
         $username =$req['username'];
         $password = $req['password'];
 
-        $student = new student;
+        $student = new Student;
         $student->firstname =$firstname;
         $student->lastname = $lastname;
         $student->email = $email;
