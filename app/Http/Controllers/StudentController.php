@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use App\Student;
+use App\Students;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
 
@@ -21,7 +21,7 @@ class StudentController extends Controller
         $username =$req['username'];
         $password = $req['password'];
 
-        $student = new Student;
+        $student = new Students;
         $student->firstname =$firstname;
         $student->lastname = $lastname;
         $student->email = $email;
