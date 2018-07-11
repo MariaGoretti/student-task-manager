@@ -25,7 +25,7 @@ class StudentController extends Controller
         $student->lastname = $lastname;
         $student->email = $email;
         $student->phone = $phone;
-        $student->username =$username;
+        $student->username =$username, false;
         $student->password = Hash::make($password);
         $student->save();
 
