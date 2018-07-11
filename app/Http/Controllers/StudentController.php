@@ -74,21 +74,21 @@ echo json_encode($response);
     	  $loginArray = array();
 $response = array();
 
-if(isset($_POST['email'])&&isset($_POST['password'])){
-    $email = $_POST['email'];
+if(isset($_POST['username'])&&isset($_POST['password'])){
+    $username = $_POST['username'];
     $password = md5($_POST['password']);
     
-    $query = "SELECT email, password FROM students WHERE email=? && password=?";
+    $query = "SELECT username, password FROM students WHERE username=? && password=?";
     if($stmt = $con->prepare($query)){
         
-        $stmt->bind_param("i",$email, $password);
+        $stmt->bind_param("i",$username, $password);
         $stmt->execute();
         
-        $stmt->bind_result($email,$password);
+        $stmt->bind_result($username,$password);
            
         if($stmt->fetch()){
         
-            $loginArray["email"] = $email;
+            $loginArray["username"] = $username;
             $loginArray["password"] = $password;
             
             $response["success"] = 1;
@@ -112,7 +112,7 @@ if(isset($_POST['email'])&&isset($_POST['password'])){
 }else{
     
     $response["success"] = 0;
-    $response["message"] = "Missing either email address or password";
+    $response["message"] = "Missing either username or password";
 }
 //Display JSON response
 echo json_encode($response);
