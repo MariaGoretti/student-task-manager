@@ -36,7 +36,7 @@ class TaskController extends Controller
 
 	public function all(Request $req)
     {
-    	$data = add_tasks::all();
+    	$data = Tasks::all();
         return $data;
 
     }
