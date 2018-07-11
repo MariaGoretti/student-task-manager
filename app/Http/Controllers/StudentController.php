@@ -69,19 +69,52 @@ echo json_encode($response);
 
 
 
-	public function login(Request $req)
+	public function login()
     {
+    	  $loginArray = array();
+$response = array();
+
+if(isset($_POST['email'])&&isset($_POST['password'])){
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    
+    $query = "SELECT email, password FROM students WHERE email=? && password=?";
+    if($stmt = $con->prepare($query)){
         
-        $email=$req['email'];
-        $password=$req['password'];
-
-        $student = Students::where('email',$email)->firstOrFail();
-
-        if(Hash::check($password, $student->password))
-        {
-            return $student->toJson();
+        $stmt->bind_param("i",$email, $password);
+        $stmt->execute();
+        
+        $stmt->bind_result($email,$password);
+           
+        if($stmt->fetch()){
+        
+            $loginArray["email"] = $email;
+            $loginArray["password"] = $password;
+            
+            $response["success"] = 1;
+            //$response["data"] = $loginArray;
+        
+        }else{
+            
+            $response["success"] = 0;
+            $response["message"] = "Error: Either you haven't registered yet or have input an incorrect username or password";
         }
-        return null;
+        $stmt->close();
+ 
+ 
+    }else{
+        //Whe some error occurs
+        $response["success"] = 0;
+        $response["message"] = mysqli_error($con);
+        
     }
+ 
+}else{
+    
+    $response["success"] = 0;
+    $response["message"] = "Missing either email address or password";
+}
+//Display JSON response
+echo json_encode($response);
 
 }
