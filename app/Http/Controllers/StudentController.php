@@ -16,7 +16,7 @@ class StudentController extends Controller
 	    $firstname = $req['firstname'];
         $lastname = $req['lastname'];
         $email = $req['email'];
-        $phone = $req['phone'];
+        $phone = $req['phone'], false;
         $username =$req['username'];
         $password = $req['password'];
 
@@ -25,7 +25,7 @@ class StudentController extends Controller
         $student->lastname = $lastname;
         $student->email = $email;
         $student->phone = $phone;
-        $student->username =$username, false;
+        $student->username =$username;
         $student->password = Hash::make($password);
         $student->save();
 
