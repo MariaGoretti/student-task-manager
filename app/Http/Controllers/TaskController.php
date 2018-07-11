@@ -11,27 +11,62 @@ use App\Http\Resources\StudentResource;
 
 class TaskController extends Controller
 {
-     public function add(Request $req)
+     public function add()
 	{
 	
-		$title = $req->input('title');
-		$description=$req->input('description');
-		$start_date=$req->input('start_date');
-		$due_date=$req->input('due_date');
-		$sub_method=$req->input('sub_method');
+		 define('DB_USER', "task_manager");
+define('DB_PASSWORD', "student1");
+define('DB_DATABASE', "task_manager");
+define('DB_HOST', "db4free.net");
+ 
+$con = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
+ 
+// Check connection
+if(mysqli_connect_errno()){
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+     $response = array();
+ if(isset($_POST['title'])&&isset($_POST['description'])&&isset($_POST['start_date'])&&isset($_POST['due_date'])&&isset($_POST['sub_method'])){
+//Check for mandatory parameters
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $start_date = $_POST['start_date'];
+    $due_date = $_POST['due_date'];
+    $sub_method = $_POST['sub_method'];
+    
+    //Query to insert a user
+    $query = "INSERT INTO add_tasks(title, description, start_date, due_date, sub_method) VALUES (?,?,?,?,?)";
+    //Prepare the query
+    if($stmt = $con->prepare($query)){
+        //Bind parameters
+        $stmt->bind_param("ssis",$first_name,$last_name,$email_address,$password);
+        //Exceting MySQL statement
+        $stmt->execute();
 
-		$data = array(
-			'title'=>$title, 
-			'description'=>$description, 
-			'start_date'=>$start_date, 
-			'due_date'=>$due_date, 
-			'sub_method'=>$sub_method
-			);
+        //Check if data got inserted
+        if($stmt->affected_rows == 1){
+            $response["success"] = 1;           
+            $response["message"] = "Task Successfully Added";           
+            
+        }else{
+            //Some error while inserting
+            $response["success"] = 0;
+            $response["message"] = "Error while adding task";
+        } }                  
+    else{
+        //Some error while inserting
+        $response["success"] = 0;
+        $response["message"] = mysqli_error($con);
+}}else{
+    //Mandatory parameters are missing
+    $response["success"] = 0;
+    $response["message"] = "Missing mandatory parameters";
+}
 
-		DB::table('add_tasks')->insert($data);
+//Displaying JSON response
+echo json_encode($response);
+}
 
-		echo "<script type='text/javascript'>alert('Task Addded')</script>";
-		echo "<script>setTimeout(\"location.href = '/add';\",1000);</script>";
 	}
 
 	public function all(Request $req)
