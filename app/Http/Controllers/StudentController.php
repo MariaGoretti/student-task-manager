@@ -11,29 +11,63 @@ use App\Http\Resources\StudentResource;
 class StudentController extends Controller
 {
 	
-    public function register(Request $req)
+    public function register()
 	{
-	    $firstname = $req['firstname'];
-        $lastname = $req['lastname'];
-        $email = $req['email'];
-        $phone = $req['phone'];
-        $username =$req['username'];
-        $password = $req['password'];
+	   define('DB_USER', "task_manager");
+define('DB_PASSWORD', "student1");
+define('DB_DATABASE', "task_manager");
+define('DB_HOST', "db4free.net");
+ 
+$con = mysqli_connect(DB_HOST,DB_USER,DB_PASSWORD,DB_DATABASE);
+ 
+// Check connection
+if(mysqli_connect_errno()){
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
+}
+     $response = array();
+ if(isset($_POST['firstname'])&&isset($_POST['lastname'])&&isset($_POST['username'])&&isset($_POST['email'])&&isset($_POST['phone'])&&isset($_POST['password'])){
+//Check for mandatory parameters
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+    $username = $_POST['username'];
+    $phone = $_POST['phone'];
+    $email = $_POST['email'];
+    $password = md5($_POST['password']);
+    
+    //Query to insert a user
+    $query = "INSERT INTO students(firstname, lastname, username, phone, email, password) VALUES (?,?,?,?,?,?)";
+    //Prepare the query
+    if($stmt = $con->prepare($query)){
+        //Bind parameters
+        $stmt->bind_param("ssis",$firstname,$lastname,$username, $phone, $email, $password);
+        //Exceting MySQL statement
+        $stmt->execute();
 
-        $student = new Students;
-        $student->firstname =$firstname;
-        $student->lastname = $lastname;
-        $student->email = $email;
-        $student->phone = $phone;
-        $student->username =$username;
-        $student->password = Hash::make($password);
-        $student->save();
+        //Check if data got inserted
+        if($stmt->affected_rows == 1){
+            $response["success"] = 1;           
+            $response["message"] = "Registration Successful";           
+            
+        }else{
+            //Some error while inserting
+            $response["success"] = 0;
+            $response["message"] = "Error while registering";
+        } }                  
+    else{
+        //Some error while inserting
+        $response["success"] = 0;
+        $response["message"] = mysqli_error($con);
+}}else{
+    //Mandatory parameters are missing
+    $response["success"] = 0;
+    $response["message"] = "Missing mandatory parameters";
+}
 
-         return new StudentResource(
-            $student
-        );
+//Displaying JSON response
+echo json_encode($response);
+}
 
-	}
+
 
 	public function login(Request $req)
     {
