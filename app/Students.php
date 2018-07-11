@@ -8,3 +8,4 @@ class Students extends Model
 {
     public $table = 'students';
 }
+
